@@ -1,0 +1,26 @@
+---
+- name: Remediate CrashLoopBackOff Pod
+  hosts: localhost
+  collections:
+    - kubernetes.core
+  tasks:
+    - name: Notify SRE team
+      community.general.slack:
+        token: "{{ slack_token }}"
+        channel: "#sre-alerts"
+        msg: "🚨 Pod `{{ pod_name }}` in namespace `{{ namespace }}` is in CrashLoopBackOff. Attempting automatic recovery."
+
+    - name: Get Pod logs for debugging before deletion
+      kubernetes.core.k8s_log:
+        name: "{{ pod_name }}"
+        namespace: "{{ namespace }}"
+      register: pod_logs
+      ignore_errors: true
+
+    - name: Delete Pod to force recreation
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Pod
+        name: "{{ pod_name }}"
+        namespace: "{{ namespace }}"
