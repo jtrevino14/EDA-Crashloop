@@ -10,6 +10,21 @@
 #        token: "{{ slack_token }}"
 #        channel: "#sre-alerts"
 #        msg: "🚨 Pod `{{ pod_name }}` in namespace `{{ namespace }}` is in CrashLoopBackOff. Attempting automatic recovery."
+- name: Notify SRE team via Email
+      community.general.mail:
+        host: "{{ smtp_host }}"
+        port: "{{ smtp_port | default(25) }}"
+        to: "{{ alert_email_recipient }}"
+        subject: "🚨 Alert: CrashLoopBackOff detected on {{ pod_name }}"
+        body: |
+          Hello SRE Team,
+
+          A CrashLoopBackOff state was detected on:
+            • Pod Name: {{ pod_name }}
+            • Namespace: {{ namespace }}
+
+          Ansible Automation Controller is attempting automatic recovery by deleting the pod to force recreation.
+      ignore_errors: true
 
     - name: Get Pod logs for debugging before deletion
       kubernetes.core.k8s_log:
