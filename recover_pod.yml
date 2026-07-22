@@ -5,11 +5,11 @@
     - community.general
     - kubernetes.core
   tasks:
-    - name: Notify SRE team
-      community.general.slack:
-        token: "{{ slack_token }}"
-        channel: "#sre-alerts"
-        msg: "🚨 Pod `{{ pod_name }}` in namespace `{{ namespace }}` is in CrashLoopBackOff. Attempting automatic recovery."
+#    - name: Notify SRE team
+#      community.general.slack:
+#        token: "{{ slack_token }}"
+#        channel: "#sre-alerts"
+#        msg: "🚨 Pod `{{ pod_name }}` in namespace `{{ namespace }}` is in CrashLoopBackOff. Attempting automatic recovery."
 
     - name: Get Pod logs for debugging before deletion
       kubernetes.core.k8s_log:
