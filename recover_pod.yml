@@ -2,6 +2,7 @@
 - name: Remediate CrashLoopBackOff Pod
   hosts: localhost
   collections:
+    - community.general
     - kubernetes.core
   tasks:
     - name: Notify SRE team
