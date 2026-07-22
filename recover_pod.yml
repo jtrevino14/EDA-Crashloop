@@ -15,6 +15,7 @@
         host: "{{ smtp_host }}"
         port: "{{ smtp_port | default(25) }}"
         to: "{{ alert_email_recipient }}"
+        from: "{{ alert_email_sender }}"
         subject: "🚨 Alert: CrashLoopBackOff detected on {{ pod_name }}"
         body: |
           Hello SRE Team,
